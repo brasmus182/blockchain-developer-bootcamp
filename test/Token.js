@@ -6,7 +6,7 @@ const tokens = (n) => {
 }
 
  describe('Token', async ()=> {
- 	let token, accounts, deployer, receiver;
+ 	let token, accounts, deployer, receiver, exchange;
 
  	beforeEach( async () => {
  		const Token = await ethers.getContractFactory('Token');
@@ -14,6 +14,7 @@ const tokens = (n) => {
 		accounts = await ethers.getSigners();
 		deployer = accounts[0];
 		receiver = accounts[1];
+		exchange = accounts[2];
  	})
  	describe('Deployment', () => {
  		const name = 'Dapp University';	
@@ -63,16 +64,45 @@ const tokens = (n) => {
  		})
 
  		describe('Failure', async ()=>{
+
  			it('Rejects insufficient balances', async () => {
  				const invalidAmt = tokens(10000000);
  				amount = invalidAmt;
  				await expect(token.connect(deployer).transfer(receiver.address, amount)).to.be.reverted;
  			})
+
  			it('Rejects invalid recipient', async () => {
  				const amount = tokens(100);
  				await expect(token.connect(deployer).transfer('0x0000000000000000000000000000000000000000', amount)).to.be.reverted;
  			})
+ 		})	
+ 	})
+ 	describe('Approving Tokens', async () => {
+ 		let amount, result, transaction;
+
+ 		beforeEach(async () => {
+ 			amount = tokens(100);
+ 			transaction = await token.connect(deployer).approve(exchange.address, amount);
+ 			result = await transaction.wait();
  		})
- 		
+
+ 		describe('Success', async () => {
+ 			it('Allocates an allowance for delegated token spending', async () => {
+ 				expect(await token.allowance(deployer.address, exchange.address)).to.equal(amount);
+ 			})
+ 			it('Emits an Approval Event', async () => {
+	 			const event = result.events[0];
+	 			expect(event.event).to.equal('Approval');
+	 			const args = event.args;
+	 			expect(args.owner).to.equal(deployer.address);
+	 			expect(args.spender).to.equal(exchange.address);
+	 			expect(args.value).to.equal(amount);
+	 		}) 	
+ 		})
+ 		describe('Failure', () => {
+ 			it('Rejects Invalid Spenders', async () => {
+ 				expect(await token.connect(deployer).approve('0x0000000000000000000000000000000000000000', amount)).to.be.reverted;
+ 			})
+ 		})
  	})
  })
