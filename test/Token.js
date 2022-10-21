@@ -8,7 +8,7 @@ const tokens = (n) => {
  describe('Token', async ()=> {
  	let token, accounts, deployer, receiver, exchange;
 
- 	beforeEach( async () => {
+ 	beforeEach(async () => {
  		const Token = await ethers.getContractFactory('Token');
 		token = await Token.deploy('Dapp University', 'DAPP', '18', '1000000');
 		accounts = await ethers.getSigners();
@@ -102,6 +102,36 @@ const tokens = (n) => {
  		describe('Failure', () => {
  			it('Rejects Invalid Spenders', async () => {
  				expect(await token.connect(deployer).approve('0x0000000000000000000000000000000000000000', amount)).to.be.reverted;
+ 			})
+ 		})
+ 	})
+
+ 	describe('Delegated Token Transfers', async () => {
+ 		let amount, result, transaction;
+ 		beforeEach(async () => {
+ 			amount = tokens(100);
+ 			transaction = await token.connect(deployer).approve(exchange.address, amount);
+ 			result = await transaction.wait();
+ 		})
+ 		describe('Success', async () => {
+ 			beforeEach(async () => {
+				transaction = await token.connect(exchange).transferFrom(deployer.address, exchange.address, amount);
+	 			result = await transaction.wait(); 				
+ 			})
+ 			it('Transfers Token Balances', async () => {
+ 				expect(await token.balanceOf(deployer.address)).to.be.equal(ethers.utils.parseUnits('999900', 'ether'));
+ 				expect(await token.balanceOf(exchange.address)).to.be.equal(amount);
+ 			})
+ 			it('Resets Allowance', async () => {
+ 				expect(await token.allowance(deployer.address, exchange.address)).to.be.equal(0);
+ 			})
+ 		})
+ 		describe('Failure', async () => {
+ 			const invalidAmt = tokens(100000000);
+ 			expect(await token.connect(exchange).transferFrom(deployer.address, receiver.address, invalidAmt)).to.be.reverted;
+ 
+ 			it('Should NOT blah blah', async () => {
+ 				
  			})
  		})
  	})
