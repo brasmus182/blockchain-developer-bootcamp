@@ -128,8 +128,9 @@ const tokens = (n) => {
  		})
  		describe('Failure', async () => {
  			const invalidAmt = tokens(100000000);
- 			expect(await token.connect(exchange).transferFrom(deployer.address, receiver.address, invalidAmt)).to.be.reverted;
- 
+ 			it('Should NOT blah blah', async () => {
+ 				expect(await token.connect(exchange).transferFrom(deployer.address, .address, invalidAmt)).to.be.reverted;
+ 			})
  			it('Should NOT blah blah', async () => {
  				
  			})
