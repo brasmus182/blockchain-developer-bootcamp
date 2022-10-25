@@ -83,8 +83,9 @@ contract Token {
 		public 
 		returns(bool success) 
 	{
-		require(balanceOf[_from] >= _value);
-		require(allowance[_from][msg.sender] >= _value, 'Not Enough Tokens');
+		//console.log(_from, _to, _value);
+		require(balanceOf[_from] >= _value, 'insufficient balance');
+		require(allowance[_from][msg.sender] >= _value, 'insufficient allowance');
 
 		allowance[_from][msg.sender] = allowance[_from][msg.sender] - _value;
 
