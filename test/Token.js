@@ -125,15 +125,19 @@ const tokens = (n) => {
  			it('Resets Allowance', async () => {
  				expect(await token.allowance(deployer.address, exchange.address)).to.be.equal(0);
  			})
+ 			it('emits a Transfer event', async () => {
+		        const event = result.events[0]
+		        expect(event.event).to.equal('Transfer')
+
+		        const args = event.args
+		        expect(args.from).to.equal(deployer.address)
+		        expect(args.to).to.equal(exchange.address)
+		        expect(args.value).to.equal(amount)
+      		})
  		})
  		describe('Failure', async () => {
  			const invalidAmt = tokens(100000000);
- 			it('Should NOT blah blah', async () => {
- 				expect(await token.connect(exchange).transferFrom(deployer.address, .address, invalidAmt)).to.be.reverted;
- 			})
- 			it('Should NOT blah blah', async () => {
- 				
- 			})
+ 			await expect(token.connect(exchange).transferFrom(deployer.address, receiver.address, invalidAmt)).to.be.reverted;
  		})
  	})
  })
