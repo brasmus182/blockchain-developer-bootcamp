@@ -260,46 +260,41 @@ describe('Exchange', async ()=> {
 	 				expect(await exchange.balanceOf(token2.address, feeAccount.address)).to.equal(tokens(0.1));
 	 					
 	 			})
-	 			// it('Emits a Cancellation Event', async () => {
-		 		// 	// const event = result.events[0];
-		 		// 	// expect(event.event).to.equal('CancelOrder');
-		 		// 	// const args = event.args;
-		 		// 	// expect(args.id).to.equal(1);
-		 		// 	// expect(args.user).to.equal(user1.address);
-		 		// 	// expect(args.tokenGet).to.equal(token2.address);
-		 		// 	// expect(args.amountGet).to.equal(amount);
-		 		// 	// expect(args.tokenGive).to.equal(token1.address);
-		 		// 	// expect(args.amountGive).to.equal(tokens(1));
-		 		// 	// expect(args.timeStamp).to.at.least(1);
-	 			// })
+	 			it('Emits Trade Event', async () => {
+		 			const event = result.events[0];
+		 			expect(event.event).to.equal('Trade');
+		 			const args = event.args;
+		 			expect(args.id).to.equal(1);
+		 			expect(args.user).to.equal(user2.address);
+		 			expect(args.tokenGet).to.equal(token2.address);
+		 			expect(args.creator).to.equal(user1.address);
+		 			expect(args.amountGet).to.equal(amount);
+		 			expect(args.tokenGive).to.equal(token1.address);
+		 			expect(args.amountGive).to.equal(tokens(1));
+		 			expect(args.timestamp).to.at.least(1);
+	 			})
+	 			it('Updates Filled Orders', async () => {
+	 				expect(await exchange.orderFilled(1)).to.equal(true);
+	 			})
 	 		})
 	 		describe('Failure', async () => {
 	 			beforeEach(async () => {
-			 		// transaction = await exchange.connect(user1).cancelOrder(1);
-			 		// result = await transaction.wait();
+			 		
 	 			})
-	 			// it('Rejects invalid Order IDs', async () => {
-	 			// 	await expect(exchange.connect(user1).cancelOrder(100)).to.be.reverted;
-	 			// })
-	 			// it('Rejects Cancellation by Users Other than Order Creator', async () => {
-	 			// 	await expect(exchange.connect(user2).cancelOrder(2)).to.be.reverted;
-	 			// })
-	 			// it('Will not cancel an already cancelled order', async () => {
-	 			// 	await expect(exchange.connect(user1).cancelOrder(1)).to.be.reverted;
-	 			// })
+	 			it('Rejects invalid Order IDs', async () => {
+	 				await expect(exchange.connect(user2).fillOrder(100)).to.be.reverted;
+	 			})
+	 			it('Rejects Cancelled Orders', async () => {
+	 				transaction = await exchange.connect(user1).cancelOrder(1);
+			 		await transaction.wait();
+	 				await expect(exchange.connect(user2).fillOrder(1)).to.be.reverted;
+	 			})
+	 			it('Will not fill an already filled order', async () => {
+	 				transaction = await exchange.connect(user2).fillOrder(1);
+			 		await transaction.wait();
+	 				await expect(exchange.connect(user1).fillOrder(1)).to.be.reverted;
+	 			})
 	 		})	
 	 	})
 	}) 
 })
-
-
-
-
-
-
-
-
-
-
-
-

@@ -47,6 +47,17 @@ contract Exchange {
 		uint256 timeStamp
 	);
 
+	event Trade(
+		uint256 id,
+		address user,
+		address tokenGet,
+		uint256 amountGet,
+		address tokenGive,
+		uint256 amountGive,
+		address creator,
+		uint256 timestamp
+	);
+
 	struct _Order {
 		uint256 id; //unique ID for order
 		address user; //User who made order
@@ -204,17 +215,15 @@ contract Exchange {
 			tokens[_tokenGive][msg.sender] + 
 			_amountGive;
 		
-
+		emit Trade(
+			_orderId,
+			msg.sender,
+			_tokenGet,
+			_amountGet,
+			_tokenGive,
+			_amountGive,
+			_user,
+			block.timestamp
+		);
 	} 
-
 }
-
-
-
-
-
-
-
-
-
-
