@@ -11,6 +11,7 @@ contract Exchange {
 	mapping(uint256 => _Order) public orders;
 	uint256 public orderCount;
 	mapping(uint256 => bool) public orderCancelled;
+	mapping(uint256 => bool) public orderFilled;
 
 	event Deposit(
 		address token,
@@ -152,6 +153,11 @@ contract Exchange {
 	function fillOrder(
 		uint256 _id
 		) public {
+		require(_id > 0 && _id <= orderCount, "Order does not exist");
+        // 2. Order can't be filled
+        require(!orderFilled[_id]);
+        // 3. Order can't be cancelled
+        require(!orderCancelled[_id]);
 		//Fetch Order
 		_Order storage _order = orders[_id];	
 		//Execute Trade
@@ -163,6 +169,7 @@ contract Exchange {
 			_order.tokenGive,
 			_order.amountGive
 		);
+		orderFilled[_order.id] = true;
 
 	}
 
@@ -172,23 +179,42 @@ contract Exchange {
 		address _tokenGet,
 		uint256 _amountGet,
 		address _tokenGive,
-		uint256 _amountGive,
+		uint256 _amountGive
+		) public {
 
-		) internal {
-
-		uint256 feeAmount = (feePercent * _amountGet) / 100;
+		uint256 _feeAmount = (_amountGet * feePercent) / 100;
 
 		//Trade here
 		//Handle get portion
-		tokens[_tokenGet][msg.sender] = tokens[_tokenGet][msg.sender] - _amountGet + feeAmount);
+		tokens[_tokenGet][msg.sender] = 
+			tokens[_tokenGet][msg.sender] - 
+			(_amountGet + _feeAmount);
+
 		tokens[_tokenGet][_user] = tokens[_tokenGet][_user] + _amountGet;
+
+		//Handle exchange fees
+		tokens[_tokenGet][feeAccount] = 
+			tokens[_tokenGet][feeAccount] + 
+			_feeAmount;
 
 		//Hanlde give portion
 		tokens[_tokenGive][_user] = tokens[_tokenGive][_user] - _amountGive;
-		tokens[_tokenGive][msg.sender] = tokens[_tokenGive][msg.sender] + _amountGive;
-		//Handle exchange fees
-		tokens[_tokenGive][feeAccount] = tokens[_tokenGive][feeAccount] + feeAmount;
+
+		tokens[_tokenGive][msg.sender] = 
+			tokens[_tokenGive][msg.sender] + 
+			_amountGive;
+		
 
 	} 
 
 }
+
+
+
+
+
+
+
+
+
+
