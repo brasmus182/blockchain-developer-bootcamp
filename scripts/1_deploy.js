@@ -1,11 +1,31 @@
-async function main() {
-  // Fetch contract to deploy
-  const Token = await ethers.getContractFactory("Token")
+const tokens = (n) => {
+  return ethers.utils.parseUnits(n.toString(), 'ether');
+}
 
-  // Deploy contract
-  const token = await Token.deploy()
-  await token.deployed()
-  console.log(`Token Deployed to: ${token.address}`)
+async function main() {
+  console.log('Preparing deployment...\n')
+  // Fetch contracts to deploy
+  const Token = await ethers.getContractFactory('Token')
+  const Exchange = await ethers.getContractFactory('Exchange')
+
+  //Getting accounts
+  const accounts = ethers.getSigners();
+
+  console.log(`Accounts retreived: \n${accounts[0].address}\n${accounts[1].address}`)
+
+  // Deploy contracts
+  const dapp = await Token.deploy('DAPP Token', 'DAPP', tokens(100000000))
+  const mETH = await Token.deploy('mETH', 'mETH', 18, tokens(100000000))
+  const mDAI = await Token.deploy('mDAI', 'mDAI', 18, tokens(100000000))
+  const exchange = await Exchange.deploy(accounts[1], 10)
+  await dapp.deployed()
+  await mETH.deployed()
+  await mDAI.deployed()
+  await exchange.deployed()
+  console.log(`Dapp Token Deployed to: ${dapp.address}`)
+  console.log(`mETH Token Deployed to: ${mETH.address}`)
+  console.log(`mDAI Token Deployed to: ${mDAI.address}`)
+  console.log(`Exchange Deployed to:${exchange.address}`)
 }
 
 main()
