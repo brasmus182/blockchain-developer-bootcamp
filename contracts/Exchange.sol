@@ -116,7 +116,7 @@ contract Exchange {
         require(balanceOf(_tokenGive, msg.sender) >= _amountGive);	
 
 	//Order # iteration
-		orderCount = orderCount + 1;
+		orderCount ++;
 		//Order storage 
 		orders[orderCount] = _Order(
 	            orderCount,
