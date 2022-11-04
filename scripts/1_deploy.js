@@ -1,7 +1,3 @@
-const tokens = (n) => {
-  return ethers.utils.parseUnits(n.toString(), 'ether');
-}
-
 async function main() {
   console.log('Preparing deployment...\n')
   // Fetch contracts to deploy
@@ -9,15 +5,16 @@ async function main() {
   const Exchange = await ethers.getContractFactory('Exchange')
 
   //Getting accounts
-  const accounts = ethers.getSigners();
+  const accounts = await ethers.getSigners();
+
 
   console.log(`Accounts retreived: \n${accounts[0].address}\n${accounts[1].address}`)
 
   // Deploy contracts
-  const dapp = await Token.deploy('DAPP Token', 'DAPP', tokens(100000000))
-  const mETH = await Token.deploy('mETH', 'mETH', 18, tokens(100000000))
-  const mDAI = await Token.deploy('mDAI', 'mDAI', 18, tokens(100000000))
-  const exchange = await Exchange.deploy(accounts[1], 10)
+  const dapp = await Token.deploy('DAPP Token', 'DAPP', 18, 1000000)
+  const mETH = await Token.deploy('mETH', 'mETH', 18, 1000000)
+  const mDAI = await Token.deploy('mDAI', 'mDAI', 18, 1000000)
+  const exchange = await Exchange.deploy(accounts[1].address, 10)
   await dapp.deployed()
   await mETH.deployed()
   await mDAI.deployed()
