@@ -1,4 +1,4 @@
-//const config = require('../src/config.json')
+const config = require('../src/config.json')
 
 const tokens = (n) => {
   return ethers.utils.parseUnits(n.toString(), 'ether');
@@ -13,14 +13,18 @@ async function main() {
   console.log('Preparing deployment...\n')
   //Fetch accounts from wallet -- these are unlocked
   const accounts = await ethers.getSigners();
+ 
+  const { chainId } = await ethers.provider.getNetwork();
+  console.log(`Using Chain ID: ${chainId}`);
+
   //Fetch deployed tokens
-  const DApp = await ethers.getContractAt('Token', '0x5FbDB2315678afecb367f032d93F642f64180aa3');
+  const DApp = await ethers.getContractAt('Token', config[chainId].DApp.address);
   console.log(`Token fetched: ${DApp.address}`);
-  const mETH = await ethers.getContractAt('Token', '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512');
+  const mETH = await ethers.getContractAt('Token', config[chainId].mETH.address);
   console.log(`Token fetched: ${mETH.address}`);
-  const mDAI = await ethers.getContractAt('Token', '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0');
+  const mDAI = await ethers.getContractAt('Token', config[chainId].mDAI.address);
   console.log(`Token fetched: ${mDAI.address}`);
-  const exchange = await ethers.getContractAt('Exchange', '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9');
+  const exchange = await ethers.getContractAt('Exchange', config[chainId].exchange.address);
   console.log(`Exchanged fetched: ${exchange.address}`);
 
   //Distribute tokens
@@ -43,6 +47,8 @@ async function main() {
   //User 1 approving and depositing Dapp token
   transaction = await DApp.connect(user1).approve(exchange.address, amount);
   await transaction.wait();
+
+
 
   //console.log('exchange', exchange);
 
@@ -86,6 +92,8 @@ async function main() {
   result = await transaction.wait();
   console.log(`Filled order from ${user2.address}\n`)
 
+  await wait(1);
+
   //User 1 makes 2nd order
   transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(50), DApp.address, tokens(15))
   result = await transaction.wait();
@@ -98,6 +106,8 @@ async function main() {
   transaction = await exchange.connect(user2).fillOrder(orderId);
   result = await transaction.wait();
   console.log(`Filled order from ${user2.address}\n`)
+
+  await wait(1);
 
    //User 1 makes 3rd order
   transaction = await exchange.connect(user1).makeOrder(mETH.address, tokens(200), DApp.address, tokens(20))
@@ -112,6 +122,8 @@ async function main() {
   result = await transaction.wait();
   console.log(`Filled order from ${user2.address}\n`)
 
+  await wait(1);
+
 
   ///////////////////
   //Seed Open Orders
@@ -121,6 +133,8 @@ async function main() {
     result = await transaction.wait();
 
     console.log(`Made order from ${user1.address}\n`)
+
+    await wait(1);
   }
   //User 2 makes 10 orders
   for(var i = 0; i <= 10; i++){
@@ -128,6 +142,8 @@ async function main() {
     result = await transaction.wait();
 
     console.log(`Made order from ${user1.address}\n`)
+
+    await wait(1);
   }
 
 }
