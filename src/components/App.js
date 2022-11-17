@@ -2,12 +2,14 @@
 import { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import config from '../config.json';
+import Navbar from './Navbar.js'
 
 import { 
   loadProvider,
   loadNetwork,
   loadAccount,
-  loadTokens 
+  loadTokens,
+  loadExchange
 } from '../store/interactions';
 
 
@@ -18,10 +20,15 @@ function App() {
 
   const loadBlockchainData = async () => {
     
-    await loadAccount(dispatch)
     const provider = loadProvider(dispatch);
+    await loadAccount(provider, dispatch)
     const chainId = await loadNetwork(provider, dispatch)
-    await loadTokens(provider, [config[chainId].DApp.address, config[chainId].mETH.address], dispatch)
+    const DApp = config[chainId].DApp
+    const mETH = config[chainId].mETH
+    const exchange = config[chainId].exchange 
+    await loadTokens(provider, [DApp.address, mETH.address], dispatch)
+    await loadExchange(provider, exchange.address, dispatch)
+
   }
 
   useEffect(() => {
@@ -34,7 +41,7 @@ function App() {
     <div>
    
       {/* Navbar */}
-
+      <Navbar/>
       <main className='exchange grid'>
         <section className='exchange__section--left grid'>
 
