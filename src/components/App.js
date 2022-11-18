@@ -3,6 +3,7 @@ import { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import config from '../config.json';
 import Navbar from './Navbar.js'
+import Markets from './Markets.js'
 
 import { 
   loadProvider,
@@ -21,6 +22,7 @@ function App() {
   const loadBlockchainData = async () => {
     
     const provider = loadProvider(dispatch);
+
     window.ethereum.on('accountsChanged', () => {
       loadAccount(provider, dispatch)
     })
@@ -30,10 +32,12 @@ function App() {
     })
 
     const chainId = await loadNetwork(provider, dispatch)
+
     const DApp = config[chainId].DApp
     const mETH = config[chainId].mETH
-    const exchange = config[chainId].exchange 
     await loadTokens(provider, [DApp.address, mETH.address], dispatch)
+
+    const exchange = config[chainId].exchange 
     await loadExchange(provider, exchange.address, dispatch)
 
   }
@@ -53,6 +57,7 @@ function App() {
         <section className='exchange__section--left grid'>
 
           {/* Markets */}
+        <Markets/>
 
           {/* Balance */}
 
