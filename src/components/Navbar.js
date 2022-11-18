@@ -64,7 +64,7 @@ const Navbar = () => {
       		rel='norefferer'
       		>{account.slice(0,5) + '...' + account.slice(38, 42)}
       	<Blockies
-      		account={account}
+      		seed={account}
       		size={10}
       		scale={3}
       		color="#2187D0"
