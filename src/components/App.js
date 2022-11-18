@@ -21,7 +21,14 @@ function App() {
   const loadBlockchainData = async () => {
     
     const provider = loadProvider(dispatch);
-    await loadAccount(provider, dispatch)
+    window.ethereum.on('accountsChanged', () => {
+      loadAccount(provider, dispatch)
+    })
+
+    window.ethereum.on('chainChanged', () => {
+      window.location.reload()
+    })
+
     const chainId = await loadNetwork(provider, dispatch)
     const DApp = config[chainId].DApp
     const mETH = config[chainId].mETH
