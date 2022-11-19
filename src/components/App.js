@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import config from '../config.json';
 import Navbar from './Navbar.js'
 import Markets from './Markets.js'
+import Balance from './Balance.js'
 
 import { 
   loadProvider,
@@ -60,7 +61,7 @@ function App() {
         <Markets/>
 
           {/* Balance */}
-
+        <Balance />
           {/* Order */}
 
         </section>
