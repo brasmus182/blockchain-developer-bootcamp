@@ -40,23 +40,23 @@ export const tokens = (state = DEFAULT_TOKENS_STATE, action) => {
 				contracts: [action.token],
 				symbols: [action.symbol]
 			}
-		case 'TOKEN_2_LOADED':
-			return {
-				...state,
-				loaded: true,
-				balances: [action.token]
-
-			}
 		case 'TOKEN_1_BALANCE_LOADED':
 			return {
 				...state,
 				loaded: true,
 				balances: [action.balance]
 			}
-		case 'TOKEN_2_BALANCE_LOADED':
+		case 'TOKEN_2_LOADED':
 			return {
 				...state,
 				loaded: true,
+				contracts: [...state.contracts, action.token],
+				symbols: [...state.symbols, action.symbol]
+
+			}
+		case 'TOKEN_2_BALANCE_LOADED':
+			return {
+				...state,
 				balances: [...state.balances, action.balance]
 			}
 		default:

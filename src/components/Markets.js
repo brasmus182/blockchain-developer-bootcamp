@@ -10,8 +10,7 @@ const Markets = () => {
   //const balance = useSelector(state => state.provider.balance)
   const dispatch = useDispatch()
 
-  const marketHandler = async (e) => {
-  	console.log((e.target.value).split(','), "Check for logs");
+  const marketHandler = async (e) => {  
   	loadTokens(provider, (e.target.value).split(','), dispatch)
   }
 

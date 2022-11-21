@@ -13,10 +13,10 @@ const Balance = () => {
 
   useEffect(() => {
     if(exchange && account && tokens[0] && tokens[2]){
-      loadBalances(dispatch, exchange, tokens, account)  
+      loadBalances(exchange, tokens, account, dispatch)  
     }
     
-  })
+  }, [exchange, tokens, account])
 
   return (
     <div className='component exchange__transfers'>

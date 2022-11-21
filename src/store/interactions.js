@@ -34,12 +34,12 @@ export const loadTokens = async (provider, addresses, dispatch) => {
 	let token, symbol;
 
 	token = new ethers.Contract(addresses[0], TOKEN_ABI, provider)
-	symbol = await token.symbol();
+	symbol = await token.symbol()
 
 	dispatch({type: 'TOKEN_1_LOADED', token, symbol})
 
 	token = new ethers.Contract(addresses[1], TOKEN_ABI, provider)
-	symbol = await token.symbol();
+	symbol = await token.symbol()
 
 	dispatch({type: 'TOKEN_2_LOADED', token, symbol})
 
@@ -71,3 +71,12 @@ export const loadBalances = async (exchange, tokens, account, dispatch) => {
 	dispatch({type: 'EXCHANGE_TOKEN_2_BALANCE_LOADED'}, balance)
 	
 }
+
+
+
+
+
+
+
+
+
