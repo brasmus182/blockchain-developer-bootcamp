@@ -1,11 +1,22 @@
 import dapp from '../assets/dapp.svg'
-import { useSelector } from 'react-redux'
-import loadBalances from '../store/interactions.js'
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { loadBalances } from '../store/interactions.js'
 
 const Balance = () => {
 
-
+  const dispatch = useDispatch()
   const symbols = useSelector(state => state.tokens.symbols)
+  const exchange = useSelector(state => state.exchange.contract)
+  const tokens = useSelector(state => state.tokens.contracts)
+  const account = useSelector(state => state.provider.account)
+
+  useEffect(() => {
+    if(exchange && account && tokens[0] && tokens[2]){
+      loadBalances(dispatch, exchange, tokens, account)  
+    }
+    
+  })
 
   return (
     <div className='component exchange__transfers'>
