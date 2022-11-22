@@ -1,7 +1,7 @@
 import dapp from '../assets/dapp.svg'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { loadBalances } from '../store/interactions.js'
+import { loadBalances } from '../store/interactions'
 
 const Balance = () => {
 
@@ -12,10 +12,9 @@ const Balance = () => {
   const account = useSelector(state => state.provider.account)
 
   useEffect(() => {
-    if(exchange && account && tokens[0] && tokens[2]){
+    if(exchange && account && tokens[0] && tokens[1]){
       loadBalances(exchange, tokens, account, dispatch)  
     }
-    
   }, [exchange, tokens, account])
 
   return (
