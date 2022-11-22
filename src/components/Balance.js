@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { 
   loadBalances,
-  transferTokens
+  transferTokens,
 } from '../store/interactions'
 
 const Balance = () => {
@@ -17,6 +17,7 @@ const Balance = () => {
   const symbols = useSelector(state => state.tokens.symbols)
   const exchange = useSelector(state => state.exchange.contract)
   const exchangeBalances = useSelector(state => state.exchange.balances)
+  const transferInProgress = useSelector(state => state.exchange.transferInProgress)
   const tokens = useSelector(state => state.tokens.contracts)
   const account = useSelector(state => state.provider.account)
   const tokenBalances = useSelector(state => state.tokens.balances)
@@ -27,10 +28,13 @@ const Balance = () => {
     }
   }
 
+
+
   const depositHandler = (e, token) => {
     e.preventDefault()
     if(token.address === tokens[0].address) {
       transferTokens(provider, exchange, 'Deposit', token, token1TA, dispatch)
+      setToken1TA(0)
     }
   }
 
@@ -38,7 +42,7 @@ const Balance = () => {
     if(exchange && account && tokens[0] && tokens[1]){
       loadBalances(exchange, tokens, account, dispatch)  
     }
-  }, [exchange, tokens, account])
+  }, [exchange, tokens, account, transferInProgress])
 
   return (
     <div className='component exchange__transfers'>
@@ -61,7 +65,13 @@ const Balance = () => {
 
         <form onSubmit={(e) => depositHandler(e, tokens[0])}>
           <label htmlFor="token0">{symbols && symbols[0]} Amount</label>
-          <input type="text" id='token0' placeholder='0.0000' onChange={(e) => amountHandler(e, tokens[0])}/>
+          <input 
+            type="text"
+            id='token0'
+            placeholder='0.0000'
+            value={token1TA === 0 ? '' : token1TA}
+            onChange={(e) => amountHandler(e, tokens[0])}
+          />
 
           <button className='button' type='submit'>
             <span>Deposit Tokens</span>

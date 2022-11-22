@@ -11,7 +11,8 @@ import {
   loadNetwork,
   loadAccount,
   loadTokens,
-  loadExchange
+  loadExchange,
+  subscribeToEvents
 } from '../store/interactions';
 
 
@@ -38,8 +39,10 @@ function App() {
     const mETH = config[chainId].mETH
     await loadTokens(provider, [DApp.address, mETH.address], dispatch)
 
-    const exchange = config[chainId].exchange 
-    await loadExchange(provider, exchange.address, dispatch)
+    const exchangeConfig = config[chainId].exchange 
+    const exchange = await loadExchange(provider, exchangeConfig.address, dispatch)
+
+    subscribeToEvents(exchange, dispatch)
 
   }
 
