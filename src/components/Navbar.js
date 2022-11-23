@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Blockies from 'react-blockies'
 import config from '../config.json'
 import {
-	loadAccount,
-	loadNetwork
+	loadAccount
 } from '../store/interactions'
 
 
