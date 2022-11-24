@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux'
 import sort from '../assets/sort.svg'
+import { orderBookSelector } from '../store/selectors.js'
 
 const OrderBook = () => {
 
   const symbols = useSelector(state => state.tokens.symbols)
+  const orderBook = useSelector(orderBookSelector)
 
   return (
     <div className="component exchange__orderbook">
@@ -17,9 +19,9 @@ const OrderBook = () => {
           <caption>Selling</caption>
           <thead>
             <tr>
-              <th>{symbols && symbols[0]}</th>
-              <th>{symbols && symbols[0]}/{symbols && symbols[1]}<img src="{sort}" alt="Sort" /></th>
-              <th>{symbols && symbols[1]}</th>
+              <th>{symbols && symbols[0]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[0]}/{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
             </tr>
           </thead>
           <tbody>
@@ -37,9 +39,9 @@ const OrderBook = () => {
           <caption>Buying</caption>
           <thead>
             <tr>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th>{symbols && symbols[0]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[0]}/{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
             </tr>
           </thead>
           <tbody>

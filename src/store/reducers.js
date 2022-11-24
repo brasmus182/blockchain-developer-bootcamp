@@ -139,20 +139,16 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 					isSuccessful: false
 				},
 			}
-
-			
-			
 		case 'NEW_ORDER_SUCCESS':
 
-			index = state.allOrders.data.findIndex(order => order.id === action.orderId)
+			index = state.allOrders.data.findIndex(order => order.id.toString() === action.order.id.toString())
 
-			
+
 			if(index === -1) {
 				data = [...state.allOrders.data, action.order]
 			} else {
 				data = state.allOrders.data
 			}
-
 			return {
 				...state,
 				allOrders: {
@@ -175,7 +171,15 @@ export const exchange = (state = DEFAULT_EXCHANGE_STATE, action) => {
 					isSuccessful: false,
 					isError: true
 				},
-			}		
+			}
+		case 'ALL_ORDERS_LOADED':
+			return {
+				...state,
+				allOrders: {
+					loaded: true,
+					data: action.allOrders	
+				}
+			}			
 		default: 
 			return state
 	}

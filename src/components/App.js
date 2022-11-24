@@ -14,7 +14,8 @@ import {
   loadAccount,
   loadTokens,
   loadExchange,
-  subscribeToEvents
+  subscribeToEvents,
+  loadAllOrders
 } from '../store/interactions';
 
 
@@ -45,13 +46,11 @@ function App() {
     const exchange = await loadExchange(provider, exchangeConfig.address, dispatch)
 
     subscribeToEvents(exchange, dispatch)
-
+    loadAllOrders(provider, exchange, dispatch)
   }
 
   useEffect(() => {
     loadBlockchainData();
-
-
   })
 
   return (
