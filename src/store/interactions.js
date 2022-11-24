@@ -125,12 +125,11 @@ export const transferTokens = async (provider, exchange, transferType, token, am
 	}	
 }
 
-
 export const makeBuyOrder = async (provider, exchange, tokens, order, dispatch) => {
 
 	
 	const tokenGet = tokens[0].address
-	const amountGet = ethers.utils.parseUnits((order.amount).toString(), 18)
+	const amountGet = ethers.utils.parseUnits(order.amount, 18)
 	const tokenGive = tokens[1].address 
 	const amountGive = ethers.utils.parseUnits((order.amount * order.price).toString(), 18)
 
@@ -139,7 +138,8 @@ export const makeBuyOrder = async (provider, exchange, tokens, order, dispatch) 
 	try{
 		const signer = await provider.getSigner()
 		const transaction = await exchange.connect(signer).makeOrder(tokenGet, amountGet, tokenGive, amountGive)
-		await transaction.wait()
+		const txdeets = await transaction.wait()
+		console.log(txdeets)
 	} catch(error) {
 		console.log(error)
 		dispatch({type: 'NEW_ORDER_FAIL'})

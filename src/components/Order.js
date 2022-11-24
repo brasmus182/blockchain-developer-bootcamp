@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { makeBuyOrder, makeSellOrder } from '../store/interactions'
+import { makeBuyOrder, makeBuyOrder2, makeSellOrder } from '../store/interactions'
 
 const Order = () => {
 
@@ -19,9 +19,9 @@ const sellRef = useRef(null)
 const buyHandler = (e) => {
   e.preventDefault()
   makeBuyOrder(provider, exchange, tokens, { amount, price }, dispatch)
+  //makeBuyOrder2(provider, exchange, tokens, { amount, price }, dispatch)
   setAmount(0)
   setPrice(0)
-  console.log('poopy butts')
 }
 
 const sellHandler = (e) => {
@@ -29,7 +29,6 @@ const sellHandler = (e) => {
   makeSellOrder(provider, exchange, tokens, { amount, price }, dispatch)
   setAmount(0)
   setPrice(0)
-  console.log('Biggie Boobs on my ass')
 }
 
 const tabHandler = (e) => {

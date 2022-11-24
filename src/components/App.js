@@ -6,6 +6,7 @@ import Navbar from './Navbar.js'
 import Markets from './Markets.js'
 import Balance from './Balance.js'
 import Order from './Order.js'
+import OrderBook from './OrderBook.js'
 
 import { 
   loadProvider,
@@ -62,12 +63,12 @@ function App() {
         <section className='exchange__section--left grid'>
 
           {/* Markets */}
-        <Markets/>
+          <Markets/>
 
           {/* Balance */}
-        <Balance />
+          <Balance />
           {/* Order */}
-        <Order />
+          <Order />
 
         </section>
         <section className='exchange__section--right grid'>
@@ -78,7 +79,7 @@ function App() {
 
           {/* Trades */}
 
-          {/* OrderBook */}
+          <OrderBook />
 
         </section>
       </main>
