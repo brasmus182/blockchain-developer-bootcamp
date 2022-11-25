@@ -15,6 +15,9 @@ const OrderBook = () => {
 
       <div className="flex">
 
+      {!orderBook || orderBook.sellOrders.length === 0 ? (
+        <p className='flex-center'>No Sell Orders</p>
+        ) : (
         <table className='exchange__orderbook--sell'>
           <caption>Selling</caption>
           <thead>
@@ -25,6 +28,15 @@ const OrderBook = () => {
             </tr>
           </thead>
           <tbody>
+            {orderBook && orderBook.sellOrders.map((order, index) => {
+              return(
+                <tr key={index}>
+                  <td>{order.token0Amount}</td>
+                  <td style={{ color: 'red'}}>{order.tokenPrice}</td>
+                  <td>{order.token1Amount}</td>
+                </tr>
+              )
+            })}
             <tr>
               <td></td>
               <td></td>
@@ -32,19 +44,34 @@ const OrderBook = () => {
             </tr>
           </tbody>
         </table>
+      )}
+
+        
 
         <div className='divider'></div>
 
+        {!orderBook || orderBook.buyOrders.length === 0 ? (
+        <p className='flex-center'>No Buy Orders</p>
+        ) : (
         <table className='exchange__orderbook--buy'>
           <caption>Buying</caption>
           <thead>
             <tr>
-              <th>{symbols && symbols[0]}<img src={sort} alt="Sort" /></th>
-              <th>{symbols && symbols[0]}/{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
               <th>{symbols && symbols[1]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[1]}/{symbols && symbols[0]}<img src={sort} alt="Sort" /></th>
+              <th>{symbols && symbols[0]}<img src={sort} alt="Sort" /></th>
             </tr>
           </thead>
           <tbody>
+            {orderBook && orderBook.buyOrders.map((order, index) => {
+              return(
+                <tr key={index}>
+                  <td>{order.token0Amount}</td>
+                  <td style={{ color: `${order.orderTypeClass}`}}>{order.tokenPrice}</td>
+                  <td>{order.token1Amount}</td>
+                </tr>
+              )
+            })}
             <tr>
               <td></td>
               <td></td>
@@ -52,6 +79,7 @@ const OrderBook = () => {
             </tr>
           </tbody>
         </table>
+      )}
       </div>
     </div>
   );
