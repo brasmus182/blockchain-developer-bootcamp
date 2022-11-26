@@ -129,7 +129,7 @@ export const priceChartSelector = createSelector(
 
     // get second last order price
     const secondLastPrice = get(secondLastOrder, 'tokenPrice', 0)
-
+    
     return ({
       lastPrice,
       lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
