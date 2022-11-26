@@ -1,4 +1,3 @@
-
 import { useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import config from '../config.json';
@@ -7,6 +6,8 @@ import Markets from './Markets.js'
 import Balance from './Balance.js'
 import Order from './Order.js'
 import OrderBook from './OrderBook.js'
+import PriceChart from './PriceChart.js'
+
 
 import { 
   loadProvider,
@@ -73,6 +74,7 @@ function App() {
         <section className='exchange__section--right grid'>
 
           {/* PriceChart */}
+        <PriceChart />
 
           {/* Transactions */}
 
