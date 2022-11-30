@@ -8,7 +8,7 @@ import Order from './Order.js'
 import OrderBook from './OrderBook.js'
 import PriceChart from './PriceChart.js'
 import Trades from './Trades.js'
-
+import Transactions from './Transactions.js'
 
 import { 
   loadProvider,
@@ -78,6 +78,7 @@ function App() {
         <PriceChart />
 
           {/* Transactions */}
+        <Transactions />
 
           {/* Trades */}
           <Trades />
