@@ -56,12 +56,19 @@ export const loadExchange = async (provider, address, dispatch) => {
 }
 
 export const subscribeToEvents = (exchange, dispatch) => {
+	exchange.on('CancelOrder', (id, user, tokenGet, amountGet, tokenGive, amountGive, timestamp, event) => {
+    const order = event.args
+    dispatch({ type: 'ORDER_CANCEL_SUCCESS', order, event })
+  	})
+
 	exchange.on('Deposit', (token, user, amount, balance, event) => {
 		dispatch({type: 'TRANSFER_SUCCESS', event})
 	})
+
 	exchange.on('Withdraw', (token, user, amount, balance, event) => {
 		dispatch({type: 'TRANSFER_SUCCESS', event})
 	})
+
 	exchange.on('Order', (id, user, tokenGet, amountGet, tokenGive, amountGive, timeStamp, event) => {
 		const order = event.args
 		dispatch({type: 'NEW_ORDER_SUCCESS', order, event})
