@@ -51,7 +51,7 @@ function App() {
     subscribeToEvents(exchange, dispatch)
     loadAllOrders(provider, exchange, dispatch)
   }
-
+  
   useEffect(() => {
     loadBlockchainData();
   })
