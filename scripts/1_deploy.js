@@ -5,7 +5,8 @@ async function main() {
   const Exchange = await ethers.getContractFactory('Exchange')
 
   //Getting accounts
-  const accounts = await ethers.getSigners();
+  const accounts = await ethers.getSigners()
+  
 
 
   console.log(`Accounts retreived: \n${accounts[0].address}\n${accounts[1].address}`)
@@ -26,12 +27,6 @@ async function main() {
   const exchange = await Exchange.deploy(accounts[1].address, 10)
   await exchange.deployed()
   console.log(`Exchange Deployed to:${exchange.address}`)
-  
-  
-  
-  
-  
-  
 }
 
 main()

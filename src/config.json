@@ -16,16 +16,16 @@
 	},
 	"5" : {
 		"exchange":{
-			"address": "0x"
+			"address": "0x03F64d15607D03180c69f7fCD112aadB66C82a37"
 		},
 		"DApp":{
-			"address": "0x"
+			"address": "0xD46BB0f1BaAE41E28E6c36C7b432940Fe1A0BE08"
 		},
 		"mETH":{
-			"address": "0x"
+			"address": "0xdF2425810eB25A61143a236c1dD0080d978B9bAc"
 		},
 		"mDAI":{
-			"address": "0x"
+			"address": "0x70e2e4114eF78575f000c0a3360dCC90dB37d781"
 		},
 		"explorerURL" : "https://goerli.etherscan.io"
 	}
